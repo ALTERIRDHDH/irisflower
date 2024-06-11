@@ -1,0 +1,37 @@
+# Import necessary libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+%matplotlib inline
+
+
+# Load the iris dataset
+colums = ['sepal length','sepal width', 'petal length', 'petal width', 'Class_labels']
+df = pd.read_csv('Iris.csv',names=colums)
+df.head()
+# visualization of data
+df.describe()
+sns.pairplot(df, x_vars=['sepal length', 'sepal width'], y_vars=['petal length', 'petal width'], hue='Class_labels')
+#separate the input and output
+data= df.values
+X=data[:,0:4]
+Y=data[:,4]
+print(X)
+print(Y)
+#let train the model
+from sklearn.model_selection import train_test_split
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.2)
+print(X_test.shape)
+#support vector machine learning algorithm
+from sklearn.svm import SVC
+model_svc=SVC()
+model_svc.fit(X_train,Y_train)
+# Make predictions
+prediction = model_svc.predict(X_test)
+#check the prediction accuracy
+from sklearn.metrics import accuracy_score
+print(accuracy_score(Y_test,prediction))
+#checking the model by giving manual value
+test_model = model_svc.predict([[5.3,2.5,4.6,1.9]])
+print("prediction of species:{}".format(test_model))
